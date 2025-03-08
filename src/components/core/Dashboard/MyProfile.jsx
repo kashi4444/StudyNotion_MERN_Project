@@ -1,0 +1,158 @@
+import { RiEditBoxLine } from "react-icons/ri"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+
+import { formattedDate } from "../../../utils/dateFormatter"
+import IconBtn from "../../common/IconBtn"
+import { fetchCartCourses } from "../../../services/operations/cartAPI"
+import { setCart, setTotal, setTotalItems } from "../../../slices/cartSlice"
+import { useEffect } from "react"
+import { ACCOUNT_TYPE } from "../../../utils/constants"
+ 
+export default function MyProfile() {
+  const { user } = useSelector((state) => state.profile) 
+  const navigate = useNavigate()
+
+  const { total, totalItems } = useSelector((state) => state.cart);
+  const {token} = useSelector((state)=> state.auth);
+  const{cart} = useSelector((state)=> state.cart);
+  const dispatch = useDispatch();
+
+  const fetchingCartCourses = async()=>{
+    console.log("Lets fetch the courses of cart through fetchingCartCourses")
+    const response = await fetchCartCourses(token);
+    console.log("fetching cart courses-: ",response);
+
+    dispatch(setCart(response));
+    dispatch(setTotalItems(response?.length))
+    
+    console.log("cart-: ",cart);
+    const totalAmount = response.reduce((acc, curr)=> acc+ curr.price,0);
+    dispatch(setTotal(totalAmount));
+    console.log("totalAmount-: ",totalAmount)
+    
+    console.log("cart.length-: ",cart?.length);
+  }
+  useEffect(()=>{
+    if(user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR){
+      fetchingCartCourses();
+    }
+    
+  },[])
+  return (
+    <>
+      <h1 className="mb-14 text-3xl font-medium text-richblack-5">
+        My Profile
+      </h1>
+
+      {/* Section 1 */}
+      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+        <div className="flex items-center gap-x-4">
+          <img
+            src={user?.image}
+            alt={`profile-${user?.firstName}`}
+            className="aspect-square w-[78px] rounded-full object-cover"
+          />
+          <div className="space-y-1">
+            <p className="text-lg font-semibold text-richblack-5">
+              {user?.firstName + " " + user?.lastName}
+            </p>
+            <p className="text-sm text-richblack-300">{user?.email}</p>
+          </div>
+        </div>
+        <IconBtn
+          text="Edit"
+          onclick={() => {
+            navigate("/dashboard/settings")
+          }}
+        >
+          <RiEditBoxLine />
+        </IconBtn>
+      </div>
+
+      {/* Section 2 */}
+      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+        <div className="flex w-full items-center justify-between">
+          <p className="text-lg font-semibold text-richblack-5">About</p>
+          <IconBtn
+            text="Edit"
+            onclick={() => {
+              navigate("/dashboard/settings")
+            }}
+          >
+            <RiEditBoxLine />
+          </IconBtn>
+        </div>
+        <p
+          className={`${
+            user?.additionalDetails?.about
+              ? "text-richblack-5"
+              : "text-richblack-400"
+          } text-sm font-medium`}
+        >
+          {user?.additionalDetails?.about ?? "Write Something About Yourself"}
+        </p>
+      </div>
+
+      {/* Section 3 */}
+      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+        <div className="flex w-full items-center justify-between">
+          <p className="text-lg font-semibold text-richblack-5">
+            Personal Details
+          </p>
+          <IconBtn
+            text="Edit"
+            onclick={() => {
+              navigate("/dashboard/settings")
+            }}
+          >
+            <RiEditBoxLine />
+          </IconBtn>
+        </div>
+        <div className="flex max-w-[500px] justify-between">
+          <div className="flex flex-col gap-y-5">
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">First Name</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {user?.firstName}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">Email</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {user?.email}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">Gender</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {user?.additionalDetails?.gender ?? "Add Gender"}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-y-5">
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">Last Name</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {user?.lastName}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">Phone Number</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {user?.additionalDetails?.contactNumber ?? "Add Contact Number"}
+              </p>
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-richblack-600">Date Of Birth</p>
+              <p className="text-sm font-medium text-richblack-5">
+                {formattedDate(user?.additionalDetails?.dateOfBirth) ??
+                  "Add Date Of Birth"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
