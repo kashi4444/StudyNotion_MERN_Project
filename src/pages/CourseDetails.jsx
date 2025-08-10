@@ -38,22 +38,21 @@ function CourseDetails() {
     (async () => {
       try {
         const res = await fetchCourseDetails(courseId);
-        console.log("course details res: ", res);
-        setCourseData(res);
-        console.log("courseData-: ", courseData);
+        console.log("course details res: ", res.data);
+        setCourseData(res.data);
+        
       } catch (error) {
         console.log("Could not fetch Course Details");
       }
     })();
   }, [courseId]);
-
   // Calculating Avg Review count
   const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
     console.log("Course Data has been changed");
     console.log("course details res after changing courseData: ", courseData);
-    const count = GetAvgRating(courseData?.data.ratingAndReviews);
-    setAvgReviewCount(count);
+    // const count = GetAvgRating(courseData?.data.ratingAndReviews);
+    // setAvgReviewCount(count);
   }, [courseData]);
 
   // console.log("avgReviewCount: ", avgReviewCount)
@@ -66,7 +65,7 @@ function CourseDetails() {
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
-        : isActive.filter((e) => e != id)
+        : isActive.filter((e) => e !== id)
     );
   };
 
@@ -108,7 +107,7 @@ function CourseDetails() {
       </div>
     );
   }
-  if (!courseData.success) {
+  if (!courseData) {
     return <Error />;
   }
 
@@ -124,7 +123,7 @@ function CourseDetails() {
     instructor,
     studentsEnrolled,
     createdAt,
-  } = courseData?.data;
+  } = courseData;
 
   const handleBuyCourse = () => {
     if (token) {

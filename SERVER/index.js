@@ -35,9 +35,6 @@ app.use(
         credentials: true,
     })
 )
-// taskkill /PID 3028 /F
-//taskkill /PID 17020 /F
-
 
 app.use(
     fileUpload({

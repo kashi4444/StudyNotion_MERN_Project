@@ -1,4 +1,5 @@
-import loginImg from "../assets/Images/login.webp"
+// import loginImg from "../assets/Images/login.webp"
+import loginImg from "../assets/Images/login3.jpg"
 import Template from "../components/core/Auth/Template"
 
 function Login() {
