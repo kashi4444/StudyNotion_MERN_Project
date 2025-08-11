@@ -2,6 +2,7 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+require("dotenv").config();
 
 //reset passwordToken- It basically generates a link on going to which you can easily rest your passsword
 exports.resetPasswordToken = async(req,res)=>{
@@ -31,7 +32,7 @@ exports.resetPasswordToken = async(req,res)=>{
         )
     
         //create url
-        const url =`http://localhost:3000/update-password/${token}`;
+        const url =`${process.env.FRONTEND_URL}/update-password/${token}`;
     
         //send mail containing the url
         await mailSender( email, "Reset Password Link", `Password Reset Link is ${url}`);
