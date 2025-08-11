@@ -15,7 +15,6 @@ exports.createSection = async(req,res)=>{
         }
         //create section
         const newSection = await Section.create({sectionName});
-        console.log("section currently created", newSection);
         //update course with section objectID
         const updateCourseDetails = await Course.findByIdAndUpdate(
             courseId,
@@ -31,9 +30,6 @@ exports.createSection = async(req,res)=>{
                 path:"subSection"
             }
         })
-
-        console.log("updateCourseDetails-: ", updateCourseDetails)
-        //HW -: use populate to replace section/ sub-section both in updateCourseDetails
 
         //return response
         return res.status(200).json({
@@ -94,12 +90,7 @@ exports.updateSection = async(req,res)=>{
 //delete section
 exports.deleteSection = async(req, res)=>{
     try{
-        //get ID- assuming that we are sending id in params
-        console.log("Entered in delete backend");
-        // const sectionId = req.params.id;
         const {sectionId,courseId}= req.body;
-        console.log("sectionId-: ",sectionId);
-        console.log("courseId-: ",courseId);
 
         //Update Course Content
         const updateCourseContent = await Course.findByIdAndUpdate(

@@ -28,7 +28,6 @@ exports.sendotp = async (req, res)=>{
             lowerCaseAlphabets: false,
             specialChars:false
         })
-        console.log("OTP generated-: ",otp);
 
         //check whether generated otp is unique or not
         let result = await OTP.findOne({otp:otp});
@@ -43,11 +42,9 @@ exports.sendotp = async (req, res)=>{
         //we will generate an object for an otp
         //we are not sending createdAt so that it would take it by default the present date
         const otpPayload = {email, otp};
-        console.log("otpPayload-: ",otpPayload);
 
         //create an entry for otp
         const otpBody = await OTP.create(otpPayload);
-        console.log("otpBody-: ",otpBody);
 
         res.status(200).json({
             success:true,
@@ -56,7 +53,6 @@ exports.sendotp = async (req, res)=>{
         })
     } 
     catch(err){ 
-        console.log(err);
         return res.status(500).json({
             success:false,
             message:err.message
@@ -71,7 +67,6 @@ exports.signup= async (req,res)=>{
         const {firstName, lastName, email, password,confirmPassword, accountType, contactNumber, otp} = req.body;
         //validate data
         if(!firstName || !lastName || !email || !password || !confirmPassword || !otp){
-            console.log("Data Not found");
             return res.status(403).json({
                 success:false,
                 message:"All fields are required"
@@ -98,7 +93,6 @@ exports.signup= async (req,res)=>{
         const recentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1)
    
         if(recentOtp.length === 0){
-            console.log("OTP cannot be found")
             return res.status(404).json({
                 success:false,
                 message:"OTP not found"  
@@ -140,7 +134,6 @@ exports.signup= async (req,res)=>{
         })
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({
             success:false,
             message:"User cannot be registered. Please try again"
@@ -201,7 +194,6 @@ exports.login = async(req, res)=>{
         } 
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:false,
             message:"Login Failure, please try again"
@@ -231,7 +223,6 @@ exports.changePassword= async(req, res)=>{
                 message:"Incorrect Password"
             })
         }
-        console.log("Password Matching successfull")
         //hash new Password
         const encryptedPassword = await bcrypt.hash(newPassword,10);
 
@@ -241,7 +232,6 @@ exports.changePassword= async(req, res)=>{
             {password : encryptedPassword},
             {new:true}
         );
-        console.log("User  Details updated successfully")
         //send mail- password updated
         try{
             const emailResponse = await mailSender(
@@ -252,10 +242,8 @@ exports.changePassword= async(req, res)=>{
                   `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
                 )
               )
-            console.log(emailResponse);
         }
         catch(err){
-            console.error(err);
             return res.status(400).json({
                 success:false,
                 message:"Error occured while sending mail",
@@ -270,10 +258,10 @@ exports.changePassword= async(req, res)=>{
         }) 
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:false,
-            message:"Issue in changing password, please try again"
+            message:"Issue in changing password, please try again",
+            error: err.message
         })
     }
 }

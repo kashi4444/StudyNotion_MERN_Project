@@ -4,28 +4,19 @@ const Cart = require("../models/Cart");
 exports.addCourseToCart = async(req, res)=>{
     try{
         // fetching data
-        console.log("Entered to add course in cart");
-        console.log("Req body -: ",req.body)
         const {courseId}= req.body;
         const userId = req.user.id;
-        console.log("Course id-:",courseId);
-        console.log("User id-:", userId)
         if(!courseId || !userId){
             return res.status(404).json({
                 success:false,
                 message:"All fields are required"
             })
         }
-        console.log("Data has been fetched")
-
         //check cart of that user exists or not 
         let userCart = await Cart.findOne({studentId:userId});
 
-        console.log("UserCart-: ",userCart)
-
         // let newCart;
         if(!userCart){
-            console.log("Cart is not found")
             userCart = await Cart.create({
                 studentId: userId
             })
@@ -34,7 +25,6 @@ exports.addCourseToCart = async(req, res)=>{
             //         $push:{cartContent:courseId}
             //     }
             // )
-            console.log("New cart is -:",userCart);
         }
 
         //check whether the course is already present in the cart or not
@@ -57,7 +47,6 @@ exports.addCourseToCart = async(req, res)=>{
             },
             {new:true}
         ).populate("cartContent");
-        console.log("Cart has been updated",updatedCart)
         return res.status(200).json({
             success:true,
             message:"Courses added to the cart successfully",
@@ -68,7 +57,6 @@ exports.addCourseToCart = async(req, res)=>{
         return res.status(500).json({
             success:false,
             message:err.message
-            // message:"Course could not be added"
         })
     }
 }
@@ -76,13 +64,8 @@ exports.addCourseToCart = async(req, res)=>{
 exports.removeCourseFromCart = async(req,res)=>{
     try{
         // fetching data
-        console.log("Entered to delete course from cart");
-
         const {courseId}= req.body;
         const userId = req.user.id;
-
-        console.log("Course id-:",courseId);
-        console.log("User id-:", userId);
 
         if(!courseId || !userId){
             return res.status(404).json({
@@ -90,12 +73,9 @@ exports.removeCourseFromCart = async(req,res)=>{
                 message:"All fields are required"
             })
         }
-        console.log("Data has been fetched")
-
         //check cart of that user exists or not 
         const userCart = await Cart.findOne({studentId:userId});
 
-        console.log("UserCart-: ",userCart)
         if(!userCart){
             return res.status(400).json({
                 success: false,
@@ -112,7 +92,6 @@ exports.removeCourseFromCart = async(req,res)=>{
             },
             {new:true}
         ).populate("cartContent");
-        console.log("Updated Cart-: ",updatedCart);
 
         return res.status(200).json({
             success:true,
@@ -124,7 +103,8 @@ exports.removeCourseFromCart = async(req,res)=>{
     catch(err){
         return res.status(500).json({
             success: false,
-            message:"Could not remove the course from the cart"
+            message:"Could not remove the course from the cart",
+            error: err.message
         })
     }
 }

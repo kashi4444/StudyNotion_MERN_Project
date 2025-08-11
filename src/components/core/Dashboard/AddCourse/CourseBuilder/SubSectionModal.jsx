@@ -27,10 +27,6 @@ export default function SubSectionModal({
     getValues,
   } = useForm()
 
-  // console.log("view", view)
-  // console.log("edit", edit)
-  // console.log("add", add)
-
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const { token } = useSelector((state) => state.auth)
@@ -38,7 +34,6 @@ export default function SubSectionModal({
 
   useEffect(() => {
     if (view || edit) {
-      // console.log("modalData", modalData)
       setValue("lectureTitle", modalData.title)
       setValue("lectureDesc", modalData.description)
       setValue("lectureVideo", modalData.videoUrl)
@@ -48,7 +43,6 @@ export default function SubSectionModal({
   // detect whether form is updated or not
   const isFormUpdated = () => {
     const currentValues = getValues()
-    // console.log("changes after editing form values:", currentValues)
     if (
       currentValues.lectureTitle !== modalData.title ||
       currentValues.lectureDesc !== modalData.description ||
@@ -62,9 +56,7 @@ export default function SubSectionModal({
   // handle the editing of subsection
   const handleEditSubsection = async () => {
     const currentValues = getValues()
-    // console.log("changes after editing form values:", currentValues)
     const formData = new FormData()
-    // console.log("Values After Editing form values:", currentValues)
     formData.append("sectionId", modalData.sectionId)
     formData.append("subSectionId", modalData._id)
 
@@ -83,11 +75,8 @@ export default function SubSectionModal({
       formData.append("video", currentValues.lectureVideo)
     }
     setLoading(true);
-    // console.log("formData for updation of sub section-: ",formData);
     const result = await updateSubSection(formData, token)
-    console.log("updateSubSection-: ",result);
     if (result) {
-      // console.log("result", result)
       // update the structure of course
       const updatedCourseContent = course.courseContent.map((section) =>
         section._id === modalData.sectionId ? result : section
@@ -100,7 +89,6 @@ export default function SubSectionModal({
   }
 
   const onSubmit = async (data) => {
-    // console.log(data)
     if (view) return
 
     if (edit) {
@@ -111,19 +99,15 @@ export default function SubSectionModal({
       }
       return
     }
- 
-    //console.log("lectureVideo-: ",data.lectureVideo.duration);
+
     const formData = new FormData()
     formData.append("sectionId", modalData)
     formData.append("title", data.lectureTitle)
     formData.append("description", data.lectureDesc)
     formData.append("video", data.lectureVideo)
-    console.log("data.lectureVideo-: ",data.lectureVideo);
     
     setLoading(true);
-    // console.log("formData for creation of sub section-: ",formData);
     const result = await createSubSection(formData, token);
-    console.log("After creating sub section-: ",result);
     if (result) {
 
       // update the structure of course

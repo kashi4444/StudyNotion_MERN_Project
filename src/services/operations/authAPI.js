@@ -22,18 +22,12 @@ export function sendOtp(email, navigate) {
         email,
         checkUserPresent: true,
       })
-      console.log("SENDOTP API RESPONSE............", response)
-
-      console.log(response.data.success)
-
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-
       toast.success("OTP Sent Successfully")
       navigate("/verify-email")
     } catch (error) {
-      console.log("SENDOTP API ERROR............", error)
       toast.error("Could Not Send OTP")
     }
     dispatch(setLoading(false))
@@ -52,11 +46,9 @@ export function signUp(
   navigate
 ) {
   return async (dispatch) => {
-    console.log("Entered in try block")
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
     try {
-      console.log('Signup Data:', { accountType, firstName, lastName, email, password, confirmPassword, otp});
       const response = await apiConnector("POST", SIGNUP_API, {
         firstName,
         lastName,
@@ -67,17 +59,13 @@ export function signUp(
         otp,
       })
 
-      console.log("SIGNUP API RESPONSE............", response) 
-
       if (!response.data.success) {
-        console.log("New Signup error arrived")
         throw new Error(response.data.message)
       }
       toast.success("Signup Successful")
       navigate("/login")
     } catch (error) {
       console.log("SIGNUP API ERROR............", error);
-      console.log("Data For signup is not found")
       toast.error("Signup Failed")
       navigate("/signup")
     }

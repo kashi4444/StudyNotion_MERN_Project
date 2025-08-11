@@ -57,7 +57,6 @@ exports.deleteAccount = async (req,res)=>{
     try{
         //get id
         const id = req.user.id;
-        console.log(id);
         //validation
         const userDetails = await User.findById(id);
         if(!userDetails){
@@ -175,10 +174,10 @@ exports.getEnrolledCourses = async (req, res) => {
         data: userDetails.courses,
       })
     } catch (error) {
-      console.log(error.message)
       return res.status(500).json({
         success: false,
         message: "Course could not be fetched",
+        error: error.message
       })
     }
   }
@@ -201,8 +200,6 @@ exports.updateDisplayPicture = async(req,res)=>{
 
         //upload image to cloudinary
         const image = await uploadImageToCloudinary(displayPicture, process.env.FOLDER_NAME,1000,1000);
-        console.log(image);
-        // console.log(image.secure_url);
 
         //upadte DB 
         const updatedUserProfile = await User.findByIdAndUpdate({_id:userId},
@@ -218,10 +215,10 @@ exports.updateDisplayPicture = async(req,res)=>{
         })
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:false,
-            message:"Profile picture cannot be uploaded"
+            message:"Profile picture cannot be uploaded",
+            error : err.message
         })
     }
 }
@@ -229,7 +226,6 @@ exports.updateDisplayPicture = async(req,res)=>{
 //instructorDashboard
 exports.instructorDashboard = async(req,res)=>{
     try{
-      console.log("Entered in instructorDashboard in backend");
       const courseDetails = await Course.find({instructor: req.user.id});
       const courseData = courseDetails.map((course)=>{
         const totalStudentsEnrolled = course.studentsEnrolled.length;
@@ -251,10 +247,10 @@ exports.instructorDashboard = async(req,res)=>{
       })
     }
     catch(err){
-      console.log(err);
       return res.status(500).json({
         success: false,
-        message:"Internal Server Error"
+        message:"Internal Server Error",
+        error: err.message
       })
     }
 }

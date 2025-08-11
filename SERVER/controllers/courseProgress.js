@@ -15,7 +15,6 @@ exports.updateCourseProgress = async (req, res) => {
       return res.status(404).json({ error: "Invalid subsection" })
     }
 
-    console.log("SubSection validation done");
     // Find the course progress document for the user and course
     //check for old entry
     let courseProgress = await CourseProgress.findOne({
@@ -30,7 +29,6 @@ exports.updateCourseProgress = async (req, res) => {
         message: "Course progress Does Not Exist",
       }) 
     } else {
-      console.log("Course Progress validation done");
       // If course progress exists, check if the subsection is already completed
       if (courseProgress.completedVideos.includes(subsectionId)) {
         return res.status(400).json({ error: "Subsection already completed" })
@@ -38,20 +36,20 @@ exports.updateCourseProgress = async (req, res) => {
 
       // Push the subsection into the completedVideos array
       courseProgress.completedVideos.push(subsectionId);
-      console.log("Course Progress Push done");
     }
 
     // Save the updated course progress
     await courseProgress.save();
-    console.log("Course Progress save call done");
 
     return res.status(200).json({ 
       success: true,
       message: "Course progress updated successfully" 
     })
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: "Internal server error" })
+    return res.status(500).json({ 
+      message : "Internal server error",
+      error: error.message
+     })
   }
 }
 

@@ -13,12 +13,9 @@ export default function RenderCartCourses() {
   const {token}= useSelector((state)=> state.auth);
   
   const dispatch = useDispatch();
-  console.log("cart-: ",cart);
   
-
   const removeCourseFromCartHandler = async(courseId)=>{
     const response = await removeCartCourse(courseId, token);
-    console.log("response-: ", response);
     dispatch(removeFromCart(courseId));
   }
   

@@ -37,8 +37,6 @@ export default function CoursesTable({ courses, setCourses }) {
     setLoading(false)
   }
 
-  // console.log("All Course ", courses)
-
   return (
     <>
       <Table className="rounded-xl border border-richblack-800 ">

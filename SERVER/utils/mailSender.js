@@ -2,7 +2,6 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 exports.mailSender = async(email,title,body)=>{
     try{
-        console.log("This is mail sender")
         let transporter = nodemailer.createTransport({
             host:process.env.MAIL_HOST,
             auth:{
@@ -16,12 +15,10 @@ exports.mailSender = async(email,title,body)=>{
             subject:`${title}`,
             html: `${body}`
         })
-        console.log("Info-: ", info);
         return info;
 
     }
     catch(err){
-        console.log("Something went wrong with mail sender")
         console.log(err.message);
     }
 }

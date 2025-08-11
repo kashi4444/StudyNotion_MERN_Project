@@ -7,7 +7,6 @@ import { resetCart } from "../../slices/cartSlice";
 const {COURSE_PAYMENT_API,COURSE_VERIFY_API, SEND_PAYMENT_SUCCESS_EMAIL_API} = studentEndpoints;
 
 function loadScript(src){
-    console.log("Loadscript me aa gaye h")
     return new Promise((resolve)=>{
         const script = document.createElement("script");
         script.src = src;
@@ -27,9 +26,6 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
     try{
         //load the script
         const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-        console.log("Script loaded")
-        console.log("res-: ", res)
-
         if(!res){
             toast.error("RazorPay SDK failed to load");
             return;
@@ -42,12 +38,9 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
                 Authorization: `Bearer ${token}`
             }
         )
-        console.log("Order initiated")
         if(!orderResponse){
             throw new Error(orderResponse.data.message);
         }
-
-        console.log("Printing orderResponse", orderResponse);
         //options
         const options = {
             key: process.env.RAZORPAY_KEY,

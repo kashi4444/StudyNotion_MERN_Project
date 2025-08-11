@@ -6,7 +6,6 @@ exports.auth = async(req, res, next)=>{
     try{
         //extract token
         const token = req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer ", "");
-        console.log(token);
         
         //if token missing, then return response
         if(!token){
@@ -19,14 +18,13 @@ exports.auth = async(req, res, next)=>{
         //verify token
         try{
             const decode = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(decode);
             req.user = decode;
         }
         catch(err){
-            console.error("Token verification error: ", err.message);
             return res.status(401).json({
                 success:false,
-                message:"Token is invalid"
+                message:"Token is invalid",
+                error: err.message
             })
         }
         next();

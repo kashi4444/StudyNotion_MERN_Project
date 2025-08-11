@@ -71,7 +71,6 @@ export function updateProfile(token, formData) {
 }
 
 export async function changePassword(token, formData) {
-  console.log("Entered for password changing");
   const toastId = toast.loading("Loading...")
   try {
     const response = await apiConnector("POST", CHANGE_PASSWORD_API, formData, {

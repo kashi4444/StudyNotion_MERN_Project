@@ -15,8 +15,9 @@ import ProfileDropdown from "../core/Auth/ProfileDropdown"
 function Navbar() {
   const { token } = useSelector((state) => state.auth)
   const { user } = useSelector((state) => state.profile) 
+  
   const { totalItems } = useSelector((state) => state.cart)
-  const location = useLocation()
+  const location = useLocation();
 
   const [subLinks, setSubLinks] = useState([])
 
@@ -26,17 +27,8 @@ function Navbar() {
     setLoading(true);
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API);
-
         const categoryList = res.data.allCategories;
-        console.log("Categories are-: ",res);
-        console.log("Category list is-:",categoryList);
         setSubLinks(categoryList);
-        if(subLinks.length ===0){
-          console.log("array is empty")
-        }
-        
-        console.log("subLinks-:", subLinks);
-        console.log("Category list2 is-:",categoryList);
       } catch (error) {
         console.log("Could not fetch Categories.", error)
       }

@@ -191,13 +191,8 @@ export default function CourseBuilderForm() {
   const [loading, setLoading] = useState(false)
   const [editSectionName, setEditSectionName] = useState(null)
   const dispatch = useDispatch()
-  console.log(course);
-  console.log("Course:", course);
-  console.log("Course Content Length:", course?.courseContent?.length);
-
   // handle form submission
   const onSubmit = async (data) => {
-    // console.log(data)
     setLoading(true);
 
     let result;
@@ -211,7 +206,6 @@ export default function CourseBuilderForm() {
         },
         token
       )
-      // console.log("edit", result)
     } else {
       result = await createSection(
         {
@@ -228,9 +222,7 @@ export default function CourseBuilderForm() {
       
     }
     if (result) {
-      // console.log("section result", result)
       dispatch(setCourse(result));
-      console.log("updated Course", course);
       setEditSectionName(null)
       setValue("sectionName", "")
     }

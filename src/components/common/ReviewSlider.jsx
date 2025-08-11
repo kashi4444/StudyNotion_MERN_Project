@@ -19,13 +19,10 @@ const ReviewSlider = () => {
     useEffect(()=>{
         const fetchAllReviews = async()=>{
             const {data} = await apiConnector("GET", ratingsEndpoints.REVIEWS_DETAILS_API);
-            console.log("Logging response in rating-: ", data);
-
             
             if(data?.success){
                 setReviews(data?.data);
             }
-            console.log("Printing reviews-: ", reviews);
         }
         fetchAllReviews();
     },[])

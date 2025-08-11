@@ -43,10 +43,10 @@ exports.resetPasswordToken = async(req,res)=>{
         }) 
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({
             success:true,
-            message:"Something went wrong in sending reset password mail"
+            message:"Something went wrong in sending reset password mail",
+            error: err.message
         });
     }  
 }
@@ -102,10 +102,10 @@ exports.resetPassword = async (req,res)=>{
         })
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({
             success:true,
-            message:"Something went wrong in resetting password"
+            message:"Something went wrong in resetting password",
+            error: err.message
         });
     }
 }

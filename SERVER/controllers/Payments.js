@@ -42,7 +42,6 @@ exports.capturePayment = async(req, res)=>{
 
         }
         catch(err){
-            console.log(err);
             return res.status(500).json({
                 success:false,
                 message:err.message
@@ -65,10 +64,10 @@ exports.capturePayment = async(req, res)=>{
         })
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({
             success:false,
-            message:"Could not Initiate Order"
+            message:"Could not Initiate Order",
+            error: err.message
         })
     }
 }
@@ -162,10 +161,8 @@ const enrollStudents = async(courses, userId, res)=>{
                 `Successfully Enrolled into ${enrolledCourse.courseName}`,
                 courseEnrollmentEmail(enrolledCourse.courseName, `${enrolledStudent.firstName}`)
             )
-            //console.log("Email Sent Successfully", emailResponse.response)
         }
         catch(err){
-            console.log(err);
             return res.status(500).json({
                 success:false,
                 message:err.message,
@@ -195,7 +192,6 @@ exports.sendPaymentSuccessEmail = async(req, res)=>{
         )
     }
     catch(err){
-        console.log("Error in sending mail", error);
         return res.status(500).json({
             success:false,
             message:"Could not send email"
@@ -336,7 +332,6 @@ exports.sendPaymentSuccessEmail = async(req, res)=>{
 
 //         }
 //         catch(err){
-//             console.error(err);
 //             return res.status(500).json({
 //                 success:false,
 //                 message:err.message

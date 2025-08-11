@@ -44,7 +44,6 @@ exports.createCourse = async(req,res)=>{
         //check for instructor
         
         const instructorDetails = await User.findById(userId, {accountType: "Instructor"});
-        console.log("Instructor Details -: ",instructorDetails);
 
         if(!instructorDetails){
             return res.status(404).json({
@@ -105,7 +104,6 @@ exports.createCourse = async(req,res)=>{
         });
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success: false,
             message:"Failed to create course",
@@ -128,7 +126,6 @@ exports.getAllCourses = async(req,res)=>{
 
     }
     catch(err){
-        console.log(err);
         return res.status(500).json({
             success:false,
             message:"Cannot fetch course data",
@@ -181,7 +178,6 @@ exports.getCourseDetails = async(req,res)=>{
         })
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success: false,
             message: err.message,
@@ -192,10 +188,8 @@ exports.getCourseDetails = async(req,res)=>{
 //getFullCourseDetails
 exports.getFullCourseDetails = async (req, res) => {
     try {
-      console.log("getFullCourseDetails");
         const { courseId } = req.body
         const userId = req.user.id
-        console.log("Data has been fetched")
 
         const courseDetails = await Course.findById({
           _id: courseId,
@@ -213,7 +207,6 @@ exports.getFullCourseDetails = async (req, res) => {
               path: "subSection",
             },
           }).exec()
-        console.log("courseDetails-: ",courseDetails);
 
           // .populate("ratingAndReviews")
  
@@ -260,7 +253,6 @@ exports.getFullCourseDetails = async (req, res) => {
           },
         })
     } catch (error) {
-      console.log("Error in finding full details of course")
         return res.status(500).json({
           success: false,
           message: error.message,
@@ -270,12 +262,9 @@ exports.getFullCourseDetails = async (req, res) => {
 
 //editCourse
 exports.editCourse = async (req, res) => {
-  console.log("Entered in edit course controller");
   try {
-    console.log("Entered in edit course controller try block")
     const { courseId } = req.body
     const updates = req.body;
-    console.log("Updates-: ", updates);
     const course = await Course.findById(courseId)
 
     if (!course) {
@@ -284,7 +273,6 @@ exports.editCourse = async (req, res) => {
 
     // If Thumbnail Image is found, update it
     if (req.files) {
-      console.log("thumbnail update")
       const thumbnail = req.files.thumbnailImage
       const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,
@@ -292,10 +280,8 @@ exports.editCourse = async (req, res) => {
       )
       course.thumbnail = thumbnailImage.secure_url
     }
-    console.log("Before key and update relation")
     // Update only the fields that are present in the request body
     for (const key in updates) {
-      console.log("Key-: ", key);
       if (updates.hasOwnProperty(key)) {
         if (key === "tag" || key === "instructions") {
           course[key] = JSON.parse(updates[key])
@@ -306,7 +292,6 @@ exports.editCourse = async (req, res) => {
     }
 
     await course.save()
-    console.log("After key and update relation");
 
     const updatedCourse = await Course.findById(courseId)
       .populate({ 
@@ -324,14 +309,12 @@ exports.editCourse = async (req, res) => {
         },
       })
       .exec()
-      console.log("After updatedCourse");
     res.json({
       success: true,
       message: "Course updated successfully",
       data: updatedCourse,
     })
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -357,7 +340,6 @@ exports.getInstructorCourses = async (req, res) => {
       data: instructorCourses,
     })
   } catch (error) {
-    console.error(error)
     res.status(500).json({
       success: false,
       message: "Failed to retrieve instructor courses",
@@ -376,7 +358,6 @@ exports.deleteCourse = async (req, res) => {
       if (!course) {
         return res.status(404).json({ message: "Course not found" })
       }
-      console.log("Course found") 
       // Unenroll students from the course
       const studentsEnrolled = course.studentsEnrolled
       for (const studentId of studentsEnrolled) {
@@ -384,7 +365,6 @@ exports.deleteCourse = async (req, res) => {
           $pull: { courses: courseId },
         })
       }
-      console.log("Student ke courses ki list me se bhi course remove ho gaya");
       
       // Delete sections and sub-sections
       const courseSections = course.courseContent
@@ -410,7 +390,6 @@ exports.deleteCourse = async (req, res) => {
         message: "Course deleted successfully",
       })
     } catch (error) {
-      console.error(error)
       return res.status(500).json({
         success: false,
         message: "Server error",

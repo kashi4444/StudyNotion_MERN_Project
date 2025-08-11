@@ -13,7 +13,7 @@
     // const [instructorData, setInstructorData] = useState(null);
 //     const [courses, setCourses] = useState([]);
 
-//     console.log("user-: ",user);
+//     .log("user-: ",user);
 
 //     useEffect(()=>{
 //         const getCourseDataWithStats = async(data)=>{
@@ -137,7 +137,6 @@ export default function Instructor() {
         setLoading(true)
         const instructorApiData = await getInstructorData(token)
         const result = await fetchInstructorCourses(token)
-        console.log(instructorApiData)
         if (instructorApiData.length) setInstructorData(instructorApiData)
         if (result) {
           setCourses(result)

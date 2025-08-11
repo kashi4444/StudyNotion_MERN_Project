@@ -38,7 +38,6 @@ function CourseDetails() {
     (async () => {
       try {
         const res = await fetchCourseDetails(courseId);
-        console.log("course details res: ", res.data);
         setCourseData(res.data);
         
       } catch (error) {
@@ -49,13 +48,6 @@ function CourseDetails() {
   // Calculating Avg Review count
   const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
-    console.log("Course Data has been changed");
-    console.log("course details res after changing courseData: ", courseData);
-    if(courseData){
-      console.log("Yes");
-    }else{
-      console.log("No");
-    }
     // const count = GetAvgRating(courseData?.data.ratingAndReviews);
     // setAvgReviewCount(count);
   }, [courseData]);
@@ -66,7 +58,6 @@ function CourseDetails() {
   // const [collapse, setCollapse] = useState("")
   const [isActive, setIsActive] = useState(Array(0));
   const handleActive = (id) => {
-    // console.log("called", id)
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
@@ -82,7 +73,6 @@ function CourseDetails() {
 
   useEffect(() => {
     let lectures = 0;
-    console.log("sub sections -: ",courseData);
 
     courseData?.data?.courseContent?.forEach((sec) => {
       lectures += sec.subSection.length || 0;
@@ -98,10 +88,6 @@ function CourseDetails() {
     setTotalDuration(durations);
     setMin(parseInt(durations));
     setSec((durations % min).toFixed(2) *100);
-
-    console.log("sec-: ",sec)
-    console.log("min-: ",min);
-    console.log("durations-: ",durations);
 
   }, [courseData]);
 
@@ -146,7 +132,6 @@ function CourseDetails() {
   };
 
   if (paymentLoading) {
-    // console.log("payment loading")
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
@@ -156,15 +141,10 @@ function CourseDetails() {
 
   const addCourseToCartHandler= async(course)=>{
     const result = await addCartCourses(courseId, token);
-    console.log("Fetched add course result is -: ", result);
     const cartProducts= result?.cartContent;
-    console.log("cartProducts-: ",cartProducts)
-    console.log("Course is -: ",course);
     dispatch(setCart(cartProducts))
     dispatch(setTotalItems(cartProducts.length))
   }
-  console.log("Course outside is -: ",courseData);
-
   return (
     <>
       <div className={`relative w-full bg-richblack-800`}>

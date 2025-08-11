@@ -11,11 +11,6 @@ exports.createSubSection = async(req, res)=>{
         //fetch video url
         const video = req.files.video;
 
-        console.log("sectionId-: ",sectionId);
-        console.log("title-: ",title);
-        console.log("description-: ",description);
-        console.log("video-: ",video);
-
         //validation
         if(!sectionId || !title || !description || !video){
             return res.status(400).json({
@@ -43,8 +38,6 @@ exports.createSubSection = async(req, res)=>{
             },
             {new:true}
         ).populate("subSection");
-
-        console.log("updatedSection-: ",updatedSection);
         
         //return response
         return res.status(200).json({
@@ -99,18 +92,16 @@ exports.updateSubSection = async (req, res) => {
         "subSection"
       )
   
-      console.log("updated section", updatedSection)
-  
       return res.json({
         success: true,
         message: "Section updated successfully",
         data: updatedSection,
       })
     } catch (error) {
-      console.error(error)
       return res.status(500).json({
         success: false,
         message: "An error occurred while updating the section",
+        error: error.message
       })
     }
   }
@@ -155,7 +146,6 @@ exports.deleteSubSection = async(req, res)=>{
         })
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:false,
             message:"Subsection cannot be Deleted",

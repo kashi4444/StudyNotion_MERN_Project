@@ -8,7 +8,6 @@ import PublishCourse from "./PublishCourse"
 
 export default function RenderSteps() {
   const { step } = useSelector((state) => state.course);
-  console.log("Steps-: ",step);
 
   const steps = [
     {

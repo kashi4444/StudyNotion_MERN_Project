@@ -17,7 +17,6 @@ export default function ProfileDropdown() {
   useOnClickOutside(ref, () => setOpen(false))
 
   if (!user){
-    console.log("User Not Found");
     return null;
   } 
 

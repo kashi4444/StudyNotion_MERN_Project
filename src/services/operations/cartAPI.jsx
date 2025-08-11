@@ -11,15 +11,12 @@ const{
 
 //add course to cart
 export const addCartCourses = async(courseId,token)=>{
-    // console.log("frontend add course ke api operation me aa gaye")
-   
     let result =[];
     const toastId = toast.loading("Loading...")
     try{
         const response = await apiConnector("POST", ADD_COURSE_TO_CART_API,{courseId},{
              Authorization: `Bearer ${token}`
         })
-        console.log("ADDING COURSE RESPONSE-: ",response);
         if(!response?.data?.success){
             throw new Error("Could not add course")
         }
@@ -40,7 +37,6 @@ export const removeCartCourse = async(courseId,token)=>{
     let result =[];
     const toastId = toast.loading("Loading...")
     try{
-        console.log("frontend remove course ke api operation me aa gaye")
         const response = await apiConnector("DELETE", REMOVE_COURSE_FROM_CART_API, 
         {courseId},
         {
@@ -54,7 +50,6 @@ export const removeCartCourse = async(courseId,token)=>{
         result = response?.data?.updatedCart
     }
     catch(err){
-        console.log("REMOVE COURSE FROM CART API ERROR.....",err)
         toast.error(err.message);
     }
     toast.dismiss(toastId);
@@ -69,7 +64,6 @@ export const fetchCartCourses = async(token)=>{
         const response = await apiConnector("GET",FETCH_CART_COURSES_API,null, {
             Authorization:`Bearer ${token}`
         })
-        console.log("FETCH CART COURSES API.....",response)
         if(!response?.data?.success){
             throw new Error("Could not fetch courses of the cart")
         }
@@ -77,7 +71,6 @@ export const fetchCartCourses = async(token)=>{
         result= response?.data?.userCart?.cartContent;
     }
     catch(err){
-        console.log("FETCH CART COURSE API ERROR......",err);
         toast.error(err);
     }
     toast.dismiss(toastId);

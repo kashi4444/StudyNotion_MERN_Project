@@ -31,11 +31,9 @@ export default function NestedView({ handleChangeEditSectionName }) {
       courseId: course._id,
       token,
     })
-    console.log("Section delete result-: ", result);
     if (result) {
       dispatch(setCourse(result))
     }
-    console.log("course", course);
     setConfirmationModal(null)
   }
 

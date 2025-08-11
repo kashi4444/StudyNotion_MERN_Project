@@ -39,11 +39,8 @@ const VideoDetailSidebar = ({setReviewModal}) => {
     },[courseSectionData, courseEntireData, location.pathname]);
 
     const handleAddReview = ()=>{
-        console.log("I am inside handle review modal")
         setReviewModal(true);
     }
-
-
 
   return (
     <>

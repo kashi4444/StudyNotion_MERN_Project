@@ -42,7 +42,6 @@ exports.createRating = async(req, res)=>{
             {$push: {ratingAndReviews: ratingReview._id}},
             {new:true}
         );
-        console.log(updatedCourseDetails);
 
         //return response
         return res.status(200).json({
@@ -52,7 +51,6 @@ exports.createRating = async(req, res)=>{
         })
     }
     catch(err){
-        console.log(err);
         return res.status(200).json({
             success:false,
             message: err.message,
@@ -93,7 +91,6 @@ exports.getAverageRating = async(req,res)=>{
         
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:true,
             message:err.message,
@@ -124,7 +121,6 @@ exports.getAllRatings = async(req, res)=>{
         })                    
     }
     catch(err){
-        console.error(err);
         return res.status(500).json({
             success:true,
             message:err.message,
