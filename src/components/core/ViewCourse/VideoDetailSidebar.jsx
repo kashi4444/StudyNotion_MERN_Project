@@ -25,7 +25,7 @@ const VideoDetailSidebar = ({setReviewModal}) => {
             const currentSectionIndex = courseSectionData.findIndex((data)=> data._id === sectionId)
 
             const currentSubSection = courseSectionData?.[currentSectionIndex]?.subSection.findIndex(
-                (data) => data._id == subSectionId
+                (data) => data._id === subSectionId
             )
 
             const activeSubSectionId = courseSectionData?.[currentSectionIndex]?.subSection?.[currentSubSection]?._id;
