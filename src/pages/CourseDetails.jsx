@@ -51,6 +51,11 @@ function CourseDetails() {
   useEffect(() => {
     console.log("Course Data has been changed");
     console.log("course details res after changing courseData: ", courseData);
+    if(courseData){
+      console.log("Yes");
+    }else{
+      console.log("No");
+    }
     // const count = GetAvgRating(courseData?.data.ratingAndReviews);
     // setAvgReviewCount(count);
   }, [courseData]);

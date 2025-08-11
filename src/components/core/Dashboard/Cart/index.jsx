@@ -18,15 +18,18 @@ export default function Cart() {
   const fetchingCartCourses = async()=>{
     console.log("Lets fetch the courses of cart through fetchingCartCourses")
     const response = await fetchCartCourses(token);
-    console.log("fetching cart courses-: ",response);
+    console.log("fetching cart courses-: ",response); 
 
     dispatch(setCart(response));
     dispatch(setTotalItems(response?.length))
     
     console.log("cart-: ",cart);
-    const totalAmount = response.reduce((acc, curr)=> acc+ curr.price,0);
-    dispatch(setTotal(totalAmount));
-    console.log("totalAmount-: ",totalAmount)
+    if(response){
+      const totalAmount = response.reduce((acc, curr)=> acc+ curr.price,0);
+      dispatch(setTotal(totalAmount));
+      console.log("totalAmount-: ",totalAmount)
+    }
+    
     
     console.log("cart.length-: ",cart?.length);
   }

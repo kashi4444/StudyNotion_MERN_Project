@@ -15,7 +15,8 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse ,addC
   const { token } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
+ 
+  console.log("Course-: ",course);
   const {
     thumbnail: ThumbnailImage,
     price: CurrentPrice,
