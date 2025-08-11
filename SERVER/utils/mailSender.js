@@ -10,7 +10,7 @@ exports.mailSender = async(email,title,body)=>{
             }
         })
         let info = await transporter.sendMail({
-            from:"StudyNotion || Codehelp - by Babbar",
+            from:"StudyNotion - by Kashish Agarwal",
             to: `${email}`,
             subject:`${title}`,
             html: `${body}`

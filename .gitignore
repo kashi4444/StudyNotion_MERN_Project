@@ -19,5 +19,12 @@
 .env.production.local
 
 npm-debug.log*
-yarn-debug.log*
+yarn-debug.log* 
 yarn-error.log*
+
+# Environment variable
+/.env
+SERVER/.env
+SERVER/.env.local
+SERVER/.env.*.local
+
